@@ -1,4 +1,3 @@
-//const express = require('express');
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -6,46 +5,33 @@ import {Server} from "socket.io";
 
 import http from 'http';
 
+import userRoute from "./routes/user.js";
+
 const app = express();
-const server = http.createServer(app);
+const httpServer = http.createServer(app);
 
 const port = 3000;
 
-const io = new Server(server, {
+const io = new Server(httpServer, {
     cors: {
         origin: "*",
     }
 });
 
 io.on("connection", (socket) => {
-    console.log(`A user connected. Socket id: ${socket.id}`)
-
-    socket.on("message", (data) => {
-        socket.emit("data", (data))
-    })
-})
+    console.log(`A user connected. Socket id: ${socket.id}`);
+});
 
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/', (req, res) => {
-    res.json({msg: "Hello"});
-})
-
-app.get('/school', (req, res) => {
+app.get("/", (req, res) => {
     console.log(`Un utilisateur s'est connecté`);
-    res.json({msg: "iim"});
-})
+    res.json({msg: "Hello world"});
+});
 
-app.post('/', (req, res) => {
-    console.log(req.body);
-    res.json(req.body);
-})
+app.use("/api/user", userRoute);
 
-app.delete('/', (req, res) => {
-    res.json({msg: "au revoir"});
-})
-
-server.listen(port, () => {
-    console.log(`Le serveur écoute sur le port ${port}`);
-})
+httpServer.listen(port, () => {
+    console.log(`Le serveur écoute sur ${port}`);
+});
