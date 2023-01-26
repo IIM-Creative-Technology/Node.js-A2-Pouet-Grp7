@@ -1,37 +1,98 @@
-const btn = document.getElementById("btn");
-const btnSocket = document.getElementById("btnSocket");
+// const btn = document.getElementById("btn");
+// const btnSocket = document.getElementById("btnSocket");
 const ul = document.querySelector("ul");
 
-const block = document.querySelector("block");
+const msgInput = document.getElementById("msgInput");
 
-btn.addEventListener("click", () => {
-    fetch("http://localhost:3000/api/user", {
-        method: "GET",
-    }).then(d => {
-        return d.json()
-    }).then(dd => {
-        const firstName = document.querySelector("#firstName");
-        const lastName = document.querySelector("#lastName");
-        const email = document.querySelector("#email");
+const btnNote = document.getElementById("btnNote");
+const btnGlobal = document.getElementById("btnGlobal");
+const btnSuperGlobal = document.getElementById("btnSuperGlobal");
+
+// const msgs = document.getElementById("msgs");
+// const connect = document.getElementById("connect");
+// const email = document.getElementById("email").innerHTML;
+
+// btn.addEventListener("click", () => {
+//     fetch("http://localhost:3000/api/user", {
+//         method: "GET",
+//     }).then(d => {
+//         return d.json()
+//     }).then(dd => {
+//         const firstName = document.querySelector("#firstName");
+//         const lastName = document.querySelector("#lastName");
+//         const email = document.querySelector("#email");
         
-        firstName.innerHTML = dd.firstName;
-        lastName.innerHTML = dd.lastName;
-        email.innerHTML = dd.email;
-    })
-});
+//         firstName.innerHTML = dd.firstName;
+//         lastName.innerHTML = dd.lastName;
+//         email.innerHTML = dd.email;
+//     })
+// });
+
+// connect.addEventListener("click", () => {
+//     fetch("http://localhost:3000/api/user/" + email, {
+//         method: "GET",
+//     }).then(d => {
+//         return d.json()
+//     }).then(dd => {
+//         const firstName = document.querySelector("#firstName");
+//         const lastName = document.querySelector("#lastName");
+//         const email = document.querySelector("#email");
+        
+//         firstName.innerHTML = dd.firstName;
+//         lastName.innerHTML = dd.lastName;
+//         email.innerHTML = dd.email;
+//     }).catch(e => {
+//         console.log(e)
+//     })
+// });
 
 const socket = io("http://localhost:3000");
 
-btnSocket.addEventListener("click", () => {
-    socket.emit("message", 
+btnNote.addEventListener("click", () => {
+    socket.emit("msgNote", 
     {
-        msg: "Hi 👋"
+        msg: msgInput.value,
+        color: stringToColour(socket.id)
     })
+    msgInput.value = ''
+});
+
+btnGlobal.addEventListener("click", () => {
+    socket.emit("msgGlobal", 
+    {
+        msg: msgInput.value,
+        color: stringToColour(socket.id)
+    })
+    msgInput.value = ''
+});
+
+btnSuperGlobal.addEventListener("click", () => {
+    socket.emit("msgSuperGlobal", 
+    {
+        msg: msgInput.value,
+        color: stringToColour(socket.id)
+    })
+    msgInput.value = ''
 });
 
 socket.on("data", (data) => {
     console.log(socket.id); 
+    console.log(data)
     const li = document.createElement('li');
-    li.innerText = data.msg;
+    li.innerText = data.msg.msg;
+    li.style.color = data.msg.color
     ul.append(li);
 })
+
+var stringToColour = function(str) {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    var colour = '#';
+    for (var i = 0; i < 3; i++) {
+      var value = (hash >> (i * 8)) & 0xFF;
+      colour += ('00' + value.toString(16)).substr(-2);
+    }
+    return colour;
+  }

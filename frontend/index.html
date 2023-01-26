@@ -8,14 +8,28 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button id="btn">Fetch data</button>
-    <button id="btnSocket">Send socket</button>
+    <!-- <button id="btn">Fetch data</button>
+    <button id="btnSocket">Send socket</button> -->
+
+
+    <input type="text" placeholder="msg" id="msgInput">
+
+    <button id="btnNote">Send Note</button>
+    <button id="btnGlobal">Send Global</button>
+    <button id="btnSuperGlobal">Send SuperGlobal</button>
     
-    <div>firstName: <span id="firstName"></span></div>
+    <!-- <div>firstName: <span id="firstName"></span></div>
     <div>lastName: <span id="lastName"></span></div>
-    <div>email: <span id="email"></span></div>
+    <div>email: <span id="email"></span></div> -->
+
+    <ul></ul>
+
+    <!-- <input id="email" type="text" placeholder="email">
+    <button id="connect">Connect</button>
+
+    <div id="msgs"></div> -->
 
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>
-    <script src="script.js"></script>
+    <script src="index.js"></script>
 </body>
 </html>

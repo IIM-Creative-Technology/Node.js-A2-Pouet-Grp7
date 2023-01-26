@@ -20,6 +20,18 @@ const io = new Server(httpServer, {
 
 io.on("connection", (socket) => {
     console.log(`A user connected. Socket id: ${socket.id}`);
+    socket.on("msgNote", (msg) => {
+        console.log(msg)
+        socket.emit("data",{msg})
+    })
+    socket.on("msgGlobal", (msg) => {
+        console.log(msg)
+        socket.broadcast.emit("data",{msg})
+    })
+    socket.on("msgSuperGlobal", (msg) => {
+        console.log(msg)
+        io.emit("data",{msg})
+    })
 });
 
 app.use(bodyParser.json());
