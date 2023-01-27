@@ -21,16 +21,22 @@ const io = new Server(httpServer, {
 io.on("connection", (socket) => {
     console.log(`A user connected. Socket id: ${socket.id}`);
     socket.on("msgNote", (msg) => {
-        console.log(msg)
-        socket.emit("data",{msg})
+        if(msg.msg !== '' && msg.msg.trim().length !== 0){
+            console.log(msg)
+            socket.emit("data",{msg})
+        }
     })
     socket.on("msgGlobal", (msg) => {
-        console.log(msg)
-        socket.broadcast.emit("data",{msg})
+        if(msg.msg !== '' && msg.msg.trim().length !== 0){
+            console.log(msg)
+            socket.broadcast.emit("data",{msg})
+        }
     })
     socket.on("msgSuperGlobal", (msg) => {
-        console.log(msg)
-        io.emit("data",{msg})
+        if(msg.msg !== '' && msg.msg.trim().length !== 0){
+            console.log(msg)
+            io.emit("data",{msg})
+        }
     })
 });
 
