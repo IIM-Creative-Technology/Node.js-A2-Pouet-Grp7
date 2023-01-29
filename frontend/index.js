@@ -2,36 +2,60 @@ const btn = document.getElementById("btn");
 const btnSocket = document.getElementById("btnSocket");
 const ul = document.querySelector("ul");
 
+
 const block = document.querySelector("block");
 
-btn.addEventListener("click", () => {
-    fetch("http://localhost:3000/api/user", {
-        method: "GET",
+
+let pseudo = document.querySelector("#name")
+let email = document.querySelector("#email")
+let mdp = document.querySelector("#password")
+let vie = document.querySelector("#age")
+let submitBtn = document.querySelector("#submitBtn")
+
+let loginPseudo = document.querySelector("#loginName")
+let loginPassword = document.querySelector("#loginPassword")
+let SessionName = document.querySelector("#SessionName")
+let SessionName2 = document.querySelector("#SessionName2")
+let submitBtnLogin = document.querySelector("#submitBtnLogin")
+
+submitBtn.addEventListener("click", function(){
+    fetch("http://localhost:3000/api/register", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8"
+        },
+        body: JSON.stringify({
+            name: pseudo.value,
+            mail: email.value,
+            password: mdp.value,
+            age: vie.value
+        })
     }).then(d => {
         return d.json()
     }).then(dd => {
-        const firstName = document.querySelector("#firstName");
-        const lastName = document.querySelector("#lastName");
-        const email = document.querySelector("#email");
-        
-        firstName.innerHTML = dd.firstName;
-        lastName.innerHTML = dd.lastName;
-        email.innerHTML = dd.email;
+        console.log(dd)
+        pseudo.value= ''
+        email.value = ''
+        mdp.value = ''
+        vie.value = ''
     })
-});
+})
 
-const socket = io("http://localhost:3000");
-
-btnSocket.addEventListener("click", () => {
-    socket.emit("message", 
-    {
-        msg: "Hi 👋"
+submitBtnLogin.addEventListener("click", function() {
+    fetch(`http://localhost:3000/api/login/${loginName.value}/${loginPassword.value}`, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    }
     })
-});
-
-socket.on("data", (data) => {
-    console.log(socket.id); 
-    const li = document.createElement('li');
-    li.innerText = data.msg;
-    ul.append(li);
+    .then(res => {
+        return res.json()
+    })
+    .then(data => {
+        if(data[0].length != 0) {
+            SessionName.innerText = "Connecté avec : "
+            SessionName2.innerText = data[0].name
+            let userConnecte = [data[0]]
+        }
+    })
 })

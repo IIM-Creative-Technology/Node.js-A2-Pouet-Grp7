@@ -8,14 +8,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button id="btn">Fetch data</button>
     <button id="btnSocket">Send socket</button>
+
+    <input type="text" name="name" placeholder="Your name" id="name">
+    <input type="text" name="email" placeholder="Your email" id="email">
+    <input type="password" name="password" placeholder="Your password" id="password">
+    <input type="number" name="age" placeholder="Your age" id="age">
+    <button type="submit" id="submitBtn">Register</button>
     
-    <div>firstName: <span id="firstName"></span></div>
-    <div>lastName: <span id="lastName"></span></div>
-    <div>email: <span id="email"></span></div>
+    <input type="text" name="loginName" placeholder="Your name" id="loginName">
+    <input type="password" name="loginPassword" placeholder="Your password" id="loginPassword">
+    <button type="submit" id="submitBtnLogin">Login</button>
+
+    <div>
+        <h2 id="SessionName"></h2>
+        <h2 id="SessionName2"></h2>
+    </div>
 
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>
-    <script src="script.js"></script>
+    <script src="index.js"></script>
 </body>
 </html>
