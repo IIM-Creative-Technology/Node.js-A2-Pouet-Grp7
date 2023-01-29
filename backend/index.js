@@ -2,10 +2,12 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import {Server} from "socket.io";
+const router = express.Router();
 
 import http from 'http';
 
-import userRoute from "./routes/user.js";
+import registerRoute from "./routes/register.js"
+import loginRoute from "./routes/login.js"
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -30,7 +32,8 @@ app.get("/", (req, res) => {
     res.json({msg: "Hello world"});
 });
 
-app.use("/api/user", userRoute);
+app.use("/api/register", registerRoute);
+app.use("/api/login", loginRoute)
 
 httpServer.listen(port, () => {
     console.log(`Le serveur écoute sur ${port}`);
