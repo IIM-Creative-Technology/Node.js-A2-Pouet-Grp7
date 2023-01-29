@@ -7,6 +7,9 @@ import http from 'http';
 
 import userRoute from "./routes/user.js";
 
+import registerRoute from "./routes/register.js"
+import loginRoute from "./routes/login.js"
+
 const app = express();
 const httpServer = http.createServer(app);
 
@@ -14,7 +17,7 @@ const port = 3000;
 
 const io = new Server(httpServer, {
     cors: {
-        origin: "*",
+        origin: "*"
     }
 });
 
@@ -52,12 +55,15 @@ app.get("/", (req, res) => {
 });
 
 app.delete("/api/msg", (req, res) => {
+    console.log("ok")
     console.log(req.body)
     io.emit("destroy",req.body)
     res.json("request send");
 });
 
 app.use("/api/user", userRoute);
+app.use("/api/register", registerRoute);
+app.use("/api/login", loginRoute)
 
 httpServer.listen(port, () => {
     console.log(`Le serveur écoute sur ${port}`);

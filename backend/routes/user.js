@@ -1,10 +1,12 @@
-import express from "express";
-const router = express.Router();
+import mongoose from "../mongoose.js"
 
-export default router.get("/", (req, res) => {
-    res.json({
-        firstName: "Touille",
-        lastName: "Arthur",
-        email: "juju.lucie@gmail.com"
-    });
-});
+const userSchema = {
+    name: String,
+    mail: String,
+    password: String,
+    age: Number
+}
+
+const User = mongoose.model('User', userSchema);
+
+export default User

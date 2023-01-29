@@ -1,5 +1,5 @@
-// const btn = document.getElementById("btn");
-// const btnSocket = document.getElementById("btnSocket");
+const btn = document.getElementById("btn");
+const btnSocket = document.getElementById("btnSocket");
 const ul = document.querySelector("ul");
 
 const msgInput = document.getElementById("msgInput");
@@ -8,43 +8,59 @@ const btnNote = document.getElementById("btnNote");
 const btnGlobal = document.getElementById("btnGlobal");
 const btnSuperGlobal = document.getElementById("btnSuperGlobal");
 
-// const msgs = document.getElementById("msgs");
-// const connect = document.getElementById("connect");
-// const email = document.getElementById("email").innerHTML;
+let pseudo = document.querySelector("#name")
+let email = document.querySelector("#email")
+let mdp = document.querySelector("#password")
+let vie = document.querySelector("#age")
+let submitBtn = document.querySelector("#submitBtn")
 
-// btn.addEventListener("click", () => {
-//     fetch("http://localhost:3000/api/user", {
-//         method: "GET",
-//     }).then(d => {
-//         return d.json()
-//     }).then(dd => {
-//         const firstName = document.querySelector("#firstName");
-//         const lastName = document.querySelector("#lastName");
-//         const email = document.querySelector("#email");
-        
-//         firstName.innerHTML = dd.firstName;
-//         lastName.innerHTML = dd.lastName;
-//         email.innerHTML = dd.email;
-//     })
-// });
+let loginPseudo = document.querySelector("#loginName")
+let loginPassword = document.querySelector("#loginPassword")
+let SessionName = document.querySelector("#SessionName")
+let SessionName2 = document.querySelector("#SessionName2")
+let submitBtnLogin = document.querySelector("#submitBtnLogin")
 
-// connect.addEventListener("click", () => {
-//     fetch("http://localhost:3000/api/user/" + email, {
-//         method: "GET",
-//     }).then(d => {
-//         return d.json()
-//     }).then(dd => {
-//         const firstName = document.querySelector("#firstName");
-//         const lastName = document.querySelector("#lastName");
-//         const email = document.querySelector("#email");
-        
-//         firstName.innerHTML = dd.firstName;
-//         lastName.innerHTML = dd.lastName;
-//         email.innerHTML = dd.email;
-//     }).catch(e => {
-//         console.log(e)
-//     })
-// });
+submitBtn.addEventListener("click", function(){
+    fetch("http://localhost:3000/api/register", {
+        method: "POST",
+        // headers: {
+        //     "Content-Type": "application/json;charset=utf-8"
+        // },
+        body: JSON.stringify({
+            name: pseudo.value,
+            mail: email.value,
+            password: mdp.value,
+            age: vie.value
+        })
+    }).then(d => {
+        return d.json()
+    }).then(dd => {
+        console.log(dd)
+        pseudo.value= ''
+        email.value = ''
+        mdp.value = ''
+        vie.value = ''
+    })
+})
+
+submitBtnLogin.addEventListener("click", function() {
+    fetch(`http://localhost:3000/api/login/${loginName.value}/${loginPassword.value}`, {
+    method: "POST",
+    // headers: {
+    //     "Content-Type": "application/json"
+    // }
+    })
+    .then(res => {
+        return res.json()
+    })
+    .then(data => {
+        if(data[0].length != 0) {
+            SessionName.innerText = "Connecté avec : "
+            SessionName2.innerText = data[0].name
+            let userConnecte = [data[0]]
+        }
+    })
+})
 
 const socket = io("http://localhost:3000");
 
@@ -82,9 +98,9 @@ socket.on("data", (data) => {
     li.innerText = data.msg.msg;
     li.id = data.msg.id
     li.style.color = data.msg.color
-    li.addEventListener("click", function() {
-        deleteMsg(data.msg.id)
-    })
+    // li.addEventListener("click", function() {
+    //     deleteMsg(data.msg.id)
+    // })
     ul.append(li);
 })
 
@@ -109,13 +125,12 @@ var stringToColour = function(str) {
     return colour;
 }
 
-function deleteMsg(msgId){
-    console.log(msgId)
-    fetch("http://localhost:3000/api/msg", {
-        headers: {'Content-Type':"application/json; charset=utf-8", 'Access-Control-Allow-Origin': '*'},
-        method: "DELETE",
-        body: {
-            "id" : msgId
-        },
-    })
-}
+// function deleteMsg(msgId){
+//     console.log(msgId)
+//     fetch("http://localhost:3000/api/msg", {
+//         method: "DELETE",
+//         body: {
+//             "id": msgId
+//         }
+//     })
+// }
