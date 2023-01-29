@@ -80,8 +80,20 @@ socket.on("data", (data) => {
     console.log(data)
     const li = document.createElement('li');
     li.innerText = data.msg.msg;
+    li.id = data.msg.id
     li.style.color = data.msg.color
+    li.addEventListener("click", function() {
+        deleteMsg(data.msg.id)
+    })
     ul.append(li);
+})
+
+socket.on("destroy", (data) => {
+    console.log(data)
+    msg = document.getElementById(data.id)
+    if(msg !== null){
+        msg.remove()
+    }
 })
 
 var stringToColour = function(str) {
@@ -95,4 +107,15 @@ var stringToColour = function(str) {
       colour += ('00' + value.toString(16)).substr(-2);
     }
     return colour;
-  }
+}
+
+function deleteMsg(msgId){
+    console.log(msgId)
+    fetch("http://localhost:3000/api/msg", {
+        headers: {'Content-Type':"application/json; charset=utf-8", 'Access-Control-Allow-Origin': '*'},
+        method: "DELETE",
+        body: {
+            "id" : msgId
+        },
+    })
+}
